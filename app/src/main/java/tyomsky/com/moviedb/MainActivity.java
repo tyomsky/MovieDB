@@ -25,6 +25,9 @@ import tyomsky.com.moviedb.model.Movie;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final String TOP_RATED = "vote_average.desc";
+    private static final String POPULAR = "popularity.desc";
+
     @Bind(R.id.recycler_view)
     RecyclerView recyclerView;
 
@@ -64,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
             MovieDBService service = retrofit.create(MovieDBService.class);
             List<Movie> movies = null;
             try {
-                movies = service.getPopularMovies().execute().body().getResults();
+                movies = service.getMovies(TOP_RATED).execute().body().getResults();
             } catch (IOException e) {
                 Log.e(TAG, "Cant get movies", e);
             }
