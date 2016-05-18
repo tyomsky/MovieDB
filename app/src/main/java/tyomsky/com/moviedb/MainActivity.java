@@ -1,7 +1,9 @@
 package tyomsky.com.moviedb;
 
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -33,9 +35,9 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TOP_RATED_METHOD = "vote_average.desc";
     private static final String POPULAR_METHOD = "popularity.desc";
-
     @Bind(R.id.recycler_view)
     RecyclerView recyclerView;
+    private Spinner spinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,9 +65,15 @@ public class MainActivity extends AppCompatActivity {
                 android.R.layout.simple_spinner_dropdown_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
+        final String sortByPrefKey = getString(R.string.pref_sortBy_key);
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        int position = prefs.getInt(sortByPrefKey, 1);
+        spinner.setSelection(position);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+                prefs.edit().putInt(sortByPrefKey, position).apply();
                 String sortBy = getResources().getStringArray(R.array.sort_by_entry_values)[position];
                 updateMovies(sortBy);
             }
@@ -91,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
                         public Response intercept(Chain chain) throws IOException {
                             Request request = chain.request();
                             HttpUrl url = request.url().newBuilder()
-                                    .addQueryParameter("api_key",BuildConfig.THEMOVIEDB_API_KEY)
+                                    .addQueryParameter("api_key", BuildConfig.THEMOVIEDB_API_KEY)
                                     .build();
                             request = request.newBuilder().url(url).build();
                             Log.d(TAG, "OkHTTP request: " + url);
@@ -105,7 +113,9 @@ public class MainActivity extends AppCompatActivity {
             MovieDBService service = retrofit.create(MovieDBService.class);
             List<Movie> movies = null;
             try {
-                movies = service.getMovies("popular".equals(sortBy) ? POPULAR_METHOD : TOP_RATED_METHOD)
+                movies = service.getMovies(
+                        getString(R.string.pref_sortBy_popular).equals(sortBy) ?
+                                POPULAR_METHOD : TOP_RATED_METHOD)
                         .execute().body().getResults();
             } catch (IOException e) {
                 Log.e(TAG, "Cant get movies", e);
