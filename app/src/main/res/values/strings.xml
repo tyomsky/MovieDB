@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">MovieDB</string>
+    <string name="sort_by_title">Sort by</string>
+    <string-array name="sort_by_entries">
+        <item>Top rated</item>
+        <item>Popular</item>
+        <item>Favorite</item>
+    </string-array>
+    <string-array name="sort_by_entry_values">
+        <item>topRated</item>
+        <item>popular</item>
+        <item>favorite</item>
+    </string-array>
 </resources>

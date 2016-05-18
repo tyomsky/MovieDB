@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
@@ -21,9 +20,9 @@ import tyomsky.com.moviedb.model.Movie;
 
 public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.MovieViewHolder>{
 
+    private static final String TAG = "MovieListAdapter";
     private static final String BASE_IMAGE_URI = "http://image.tmdb.org/t/p/";
     private static final String IMAGE_SIZE_PATH = "w185";
-    private static final String TAG = "MovieListAdapter";
     private Context context;
     private List<Movie> movies = new ArrayList<>();
 
