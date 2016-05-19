@@ -8,8 +8,10 @@ public interface MovieDBService {
 
     @GET(value = "movie/top_rated/")
     Call<MovieDBResponse> getTopRatedMovies();
+
     @GET(value = "movie/popular")
     Call<MovieDBResponse> getPopularMovies();
+
     @GET(value = "discover/movie")
     Call<MovieDBResponse> getMovies(@Query(value = "sort_by") String sortBy);
 }
