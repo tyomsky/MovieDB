@@ -1,4 +1,4 @@
-package tyomsky.com.moviedb;
+package com.tyomsky.moviedb;
 
 import org.junit.Test;
 

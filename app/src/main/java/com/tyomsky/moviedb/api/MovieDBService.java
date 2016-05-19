@@ -1,4 +1,4 @@
-package tyomsky.com.moviedb.api;
+package com.tyomsky.moviedb.api;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

@@ -1,4 +1,4 @@
-package tyomsky.com.moviedb;
+package com.tyomsky.moviedb;
 
 import android.content.Context;
 import android.os.AsyncTask;
@@ -15,8 +15,8 @@ import okhttp3.Request;
 import okhttp3.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import tyomsky.com.moviedb.api.MovieDBService;
-import tyomsky.com.moviedb.model.Movie;
+import com.tyomsky.moviedb.api.MovieDBService;
+import com.tyomsky.moviedb.model.Movie;
 
 public class MoviesLoadingTask extends AsyncTask<String, Void, List<Movie>> {
 

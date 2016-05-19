@@ -1,4 +1,4 @@
-package tyomsky.com.moviedb;
+package com.tyomsky.moviedb;
 
 import android.content.Context;
 import android.net.Uri;
@@ -16,7 +16,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import tyomsky.com.moviedb.model.Movie;
+import com.tyomsky.moviedb.model.Movie;
 
 public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.MovieViewHolder>{
 

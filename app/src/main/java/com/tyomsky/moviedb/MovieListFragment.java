@@ -1,4 +1,4 @@
-package tyomsky.com.moviedb;
+package com.tyomsky.moviedb;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -21,13 +21,12 @@ import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import tyomsky.com.moviedb.model.Movie;
+import com.tyomsky.moviedb.model.Movie;
 
 public class MovieListFragment extends Fragment {
 
     @Bind(R.id.recycler_view)
     RecyclerView recyclerView;
-    private Spinner spinner;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

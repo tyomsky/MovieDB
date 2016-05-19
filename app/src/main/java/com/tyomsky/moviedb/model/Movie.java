@@ -1,5 +1,5 @@
 
-package tyomsky.com.moviedb.model;
+package com.tyomsky.moviedb.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

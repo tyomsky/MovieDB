@@ -1,4 +1,4 @@
-package tyomsky.com.moviedb;
+package com.tyomsky.moviedb;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;

@@ -1,4 +1,4 @@
-package tyomsky.com.moviedb;
+package com.tyomsky.moviedb;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;
