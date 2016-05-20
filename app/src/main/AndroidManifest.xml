@@ -18,7 +18,7 @@
             </intent-filter>
         </activity>
         <provider
-            android:authorities="com.tyomsky.moviedb.app"
+            android:authorities="com.tyomsky.moviedb.provider"
             android:name="com.tyomsky.moviedb.data.MovieProvider"
             android:exported="false"/>
     </application>

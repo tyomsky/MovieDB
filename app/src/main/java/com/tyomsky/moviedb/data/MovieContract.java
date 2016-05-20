@@ -1,12 +1,13 @@
 package com.tyomsky.moviedb.data;
 
 import android.content.ContentResolver;
+import android.content.ContentUris;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
 public class MovieContract {
 
-    public static final String AUTHORITY = "com.tyomsky.moviedb.app";
+    public static final String AUTHORITY = "com.tyomsky.moviedb.provider";
     public static Uri BASE_CONTENT_URI = Uri.parse("content://" + AUTHORITY);
     public static String PATH_MOVIE = "movies";
 
@@ -28,6 +29,10 @@ public class MovieContract {
         public static final String COL_RELEASE_DATE = "release_date";
         public static final String COL_POSTER_PATH = "poster_path";
         public static final String COL_VOTE_AVERAGE = "vote_average";
+
+        public Uri buildMovieUri(long id) {
+            return ContentUris.withAppendedId(CONTENT_URI, id);
+        }
 
     }
 

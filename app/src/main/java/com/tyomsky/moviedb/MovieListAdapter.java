@@ -10,13 +10,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
+import com.tyomsky.moviedb.model.Movie;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import com.tyomsky.moviedb.model.Movie;
 
 public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.MovieViewHolder>{
 
@@ -33,7 +33,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
 
     @Override
     public MovieViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        LayoutInflater inflater = LayoutInflater.from(context);
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         return new MovieViewHolder(inflater.inflate(R.layout.movie_item, parent, false));
     }
 
