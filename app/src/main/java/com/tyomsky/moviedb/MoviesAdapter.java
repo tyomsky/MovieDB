@@ -18,7 +18,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.MovieViewHolder>{
+public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewHolder>{
 
     private static final String TAG = "MovieListAdapter";
     private static final String BASE_IMAGE_URI = "http://image.tmdb.org/t/p/";
@@ -26,7 +26,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
     private Context context;
     private List<Movie> movies = new ArrayList<>();
 
-    public MovieListAdapter(Context context, List<Movie> movies) {
+    public MoviesAdapter(Context context, List<Movie> movies) {
         this.context = context;
         this.movies = movies;
     }

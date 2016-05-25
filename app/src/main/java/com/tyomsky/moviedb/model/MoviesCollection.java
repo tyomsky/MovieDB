@@ -1,4 +1,4 @@
-package com.tyomsky.moviedb.api;
+package com.tyomsky.moviedb.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -8,10 +8,8 @@ import java.util.List;
 
 import javax.annotation.Generated;
 
-import com.tyomsky.moviedb.model.Movie;
-
 @Generated("org.jsonschema2pojo")
-public class MovieDBResponse {
+public class MoviesCollection {
 
     @SerializedName("page")
     @Expose
