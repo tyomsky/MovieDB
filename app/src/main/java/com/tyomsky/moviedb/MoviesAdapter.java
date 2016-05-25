@@ -47,26 +47,26 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
         holder.bindMovie(movies.get(position));
     }
 
-    public void setMovies(List<Movie> movies) {
-        this.movies = movies;
-        notifyDataSetChanged();
-    }
-
     public void addAll(List<Movie> movies) {
-        this.movies.addAll(movies);
-        notifyDataSetChanged();
+        for (Movie movie : movies) {
+            add(movie);
+        }
     }
 
     public void addAll(List<Movie> movies, boolean preloadImages) {
-        this.movies.addAll(movies);
+        addAll(movies);
         preloadImages(movies);
-        notifyDataSetChanged();
+    }
+
+    private void add(Movie movie) {
+        movies.add(movie);
+        notifyItemInserted(movies.size() - 1);
     }
 
     private void preloadImages(List<Movie> movies) {
         for (Movie movie : movies) {
             Uri posterUri = buildPosterUri(movie);
-            Picasso.with(context).load(posterUri);
+            Picasso.with(context).load(posterUri).fetch();
         }
     }
 

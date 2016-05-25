@@ -31,6 +31,12 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter;
+import jp.wasabeef.recyclerview.adapters.ScaleInAnimationAdapter;
+import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
+import jp.wasabeef.recyclerview.adapters.SlideInLeftAnimationAdapter;
+import jp.wasabeef.recyclerview.animators.FadeInUpAnimator;
+import jp.wasabeef.recyclerview.animators.SlideInUpAnimator;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -38,7 +44,7 @@ import retrofit2.Response;
 public class MovieListFragment extends Fragment {
 
     public static final int PAGE_SIZE = 20;
-    private static final int THRESHOLD = 16;
+    private static final int THRESHOLD = 0;
 
     private int currentPage = 1;
     private boolean isLastPage;
@@ -106,11 +112,15 @@ public class MovieListFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        moviesAdapter = new MoviesAdapter(getActivity(), new ArrayList<Movie>());
-        recyclerView.setAdapter(moviesAdapter);
         int spanCount = getResources().getInteger(R.integer.span_count);
         layoutManager = new GridLayoutManager(getActivity(), spanCount);
         recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setItemAnimator(new SlideInUpAnimator());
+        moviesAdapter = new MoviesAdapter(getActivity(), new ArrayList<Movie>());
+        recyclerView.setAdapter(moviesAdapter);
+        SlideInUpAnimator animator = new SlideInUpAnimator();
+        animator.setAddDuration(400);
+        recyclerView.setItemAnimator(animator);
         recyclerView.addOnScrollListener(onScrollListener);
         fetchFirstMovies();
     }
@@ -189,4 +199,7 @@ public class MovieListFragment extends Fragment {
         calls.add(call);
     }
 
+    public RecyclerView.ItemAnimator getItemAnimator() {
+        return new FadeInUpAnimator();
+    }
 }
