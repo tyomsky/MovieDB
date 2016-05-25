@@ -23,8 +23,9 @@ public class ServiceGenerator {
     private static final long CACHE_SIZE = 50 * 1024 * 1024;
 
     public static <S> S getService(Class<S> serviceClass, String baseUrl, String apiKey) {
-        OkHttpClient client = getClient();
-        client.networkInterceptors().add(new ApiKeyInterceptor(apiKey));
+        OkHttpClient client = getClient().newBuilder()
+                .addInterceptor(new ApiKeyInterceptor(apiKey))
+                .build();
         Retrofit retrofit = new Retrofit.Builder().baseUrl(baseUrl)
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(client)

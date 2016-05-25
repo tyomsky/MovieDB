@@ -18,7 +18,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewHolder>{
+public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewHolder> {
 
     private static final String TAG = "MovieListAdapter";
     private static final String BASE_IMAGE_URI = "http://image.tmdb.org/t/p/";
@@ -52,8 +52,30 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
         notifyDataSetChanged();
     }
 
-    class MovieViewHolder extends RecyclerView.ViewHolder{
+    public void addAll(List<Movie> movies) {
+        this.movies.addAll(movies);
+        notifyDataSetChanged();
+    }
 
+    public void addAll(List<Movie> movies, boolean preloadImages) {
+        this.movies.addAll(movies);
+        preloadImages(movies);
+        notifyDataSetChanged();
+    }
+
+    private void preloadImages(List<Movie> movies) {
+        for (Movie movie : movies) {
+            Uri posterUri = buildPosterUri(movie);
+            Picasso.with(context).load(posterUri);
+        }
+    }
+
+    public void clear() {
+        movies.clear();
+        notifyDataSetChanged();
+    }
+
+    class MovieViewHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.movie_item_image_view)
         ImageView imageView;
 
@@ -63,11 +85,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
         }
 
         public void bindMovie(Movie movie) {
-            String moviePoster = movie.getPosterPath();
-            Uri imageUri = Uri.parse(BASE_IMAGE_URI).buildUpon()
-                    .appendPath(IMAGE_SIZE_PATH)
-                    .appendEncodedPath(moviePoster)
-                    .build();
+            Uri imageUri = buildPosterUri(movie);
             Log.d(TAG, imageUri.toString());
 
             Picasso.with(context)
@@ -75,6 +93,14 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
                     .error(android.R.drawable.ic_dialog_alert)
                     .into(imageView);
         }
+    }
+
+    private Uri buildPosterUri(Movie movie) {
+        String moviePoster = movie.getPosterPath();
+        return Uri.parse(BASE_IMAGE_URI).buildUpon()
+                .appendPath(IMAGE_SIZE_PATH)
+                .appendEncodedPath(moviePoster)
+                .build();
     }
 
 }

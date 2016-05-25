@@ -17,5 +17,6 @@ public interface TMDBService {
     Call<MoviesCollection> getPopularMovies();
 
     @GET(value = "discover/movie")
-    Call<MoviesCollection> getMovies(@Query(value = "sort_by") String sortBy);
+    Call<MoviesCollection> getMovies(@Query(value = "sort_by") String sortBy,
+                                     @Query(value = "page") int page);
 }
