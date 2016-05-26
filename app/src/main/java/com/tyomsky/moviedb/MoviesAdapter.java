@@ -25,6 +25,15 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
     private static final String IMAGE_SIZE_PATH = "w185";
     private Context context;
     private List<Movie> movies = new ArrayList<>();
+    private OnItemClickListener onItemClickListener;
+
+    public Movie get(int position) {
+        return movies.get(position);
+    }
+
+    public interface OnItemClickListener {
+        void onClick(int position);
+    }
 
     public MoviesAdapter(Context context, List<Movie> movies) {
         this.context = context;
@@ -34,7 +43,12 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
     @Override
     public MovieViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        return new MovieViewHolder(inflater.inflate(R.layout.movie_item, parent, false));
+        View rootView = inflater.inflate(R.layout.movie_item, parent, false);
+        return new MovieViewHolder(rootView);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
     }
 
     @Override
@@ -81,6 +95,12 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
 
         public MovieViewHolder(View view) {
             super(view);
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onItemClickListener.onClick(getAdapterPosition());
+                }
+            });
             ButterKnife.bind(this, view);
         }
 

@@ -1,5 +1,6 @@
 package com.tyomsky.moviedb.fragment;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -17,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.tyomsky.moviedb.BuildConfig;
 import com.tyomsky.moviedb.MoviesAdapter;
@@ -31,17 +33,12 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter;
-import jp.wasabeef.recyclerview.adapters.ScaleInAnimationAdapter;
-import jp.wasabeef.recyclerview.adapters.SlideInBottomAnimationAdapter;
-import jp.wasabeef.recyclerview.adapters.SlideInLeftAnimationAdapter;
-import jp.wasabeef.recyclerview.animators.FadeInUpAnimator;
 import jp.wasabeef.recyclerview.animators.SlideInUpAnimator;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MovieListFragment extends Fragment {
+public class MoviesFragment extends Fragment implements MoviesAdapter.OnItemClickListener {
 
     public static final int PAGE_SIZE = 20;
     private static final int THRESHOLD = 0;
@@ -52,6 +49,7 @@ public class MovieListFragment extends Fragment {
     private MoviesAdapter moviesAdapter;
     private boolean isLoading;
     private List<Call> calls;
+    private Callbacks callbacks;
 
     @Bind(R.id.recycler_view)
     RecyclerView recyclerView;
@@ -77,14 +75,12 @@ public class MovieListFragment extends Fragment {
                 android.R.layout.simple_spinner_dropdown_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
-        final String sortByPrefKey = getString(R.string.pref_sortBy_key);
-        int position = getPreferredSortingSpinnerPosition(sortByPrefKey);
+        int position = getPreferredSortingSpinnerPosition();
         spinner.setSelection(position);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-                prefs.edit().putInt(sortByPrefKey, position).apply();
+                setPreferredSortingSpinnerPosition(position);
                 fetchFirstMovies();
             }
 
@@ -95,7 +91,26 @@ public class MovieListFragment extends Fragment {
         });
     }
 
-    private int getPreferredSortingSpinnerPosition(String sortByPrefKey) {
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        callbacks = (Callbacks) context;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        callbacks = null;
+    }
+
+    private void setPreferredSortingSpinnerPosition(int position) {
+        final String sortByPrefKey = getString(R.string.pref_sortBy_key);
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        prefs.edit().putInt(sortByPrefKey, position).apply();
+    }
+
+    private int getPreferredSortingSpinnerPosition() {
+        final String sortByPrefKey = getString(R.string.pref_sortBy_key);
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         return prefs.getInt(sortByPrefKey, 1);
     }
@@ -117,11 +132,13 @@ public class MovieListFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new SlideInUpAnimator());
         moviesAdapter = new MoviesAdapter(getActivity(), new ArrayList<Movie>());
+        moviesAdapter.setOnItemClickListener(this);
         recyclerView.setAdapter(moviesAdapter);
         SlideInUpAnimator animator = new SlideInUpAnimator();
         animator.setAddDuration(400);
         recyclerView.setItemAnimator(animator);
         recyclerView.addOnScrollListener(onScrollListener);
+
         fetchFirstMovies();
     }
 
@@ -135,7 +152,7 @@ public class MovieListFragment extends Fragment {
     }
 
     private String getPreferredSorting() {
-        int prefIndex = getPreferredSortingSpinnerPosition(getString(R.string.pref_sortBy_key));
+        int prefIndex = getPreferredSortingSpinnerPosition();
         return getResources().getStringArray(R.array.sort_by_entry_values)[prefIndex];
     }
 
@@ -199,7 +216,19 @@ public class MovieListFragment extends Fragment {
         calls.add(call);
     }
 
-    public RecyclerView.ItemAnimator getItemAnimator() {
-        return new FadeInUpAnimator();
+    @Override
+    public void onClick(int position) {
+        Movie movie = moviesAdapter.get(position);
+        Toast.makeText(getActivity(), movie.getTitle(), Toast.LENGTH_SHORT).show();
+        if (callbacks != null) {
+            callbacks.onItemClickListener();
+        }
     }
+
+    public interface Callbacks {
+
+        void onItemClickListener();
+
+    }
+
 }
