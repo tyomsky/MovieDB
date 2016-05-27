@@ -1,4 +1,4 @@
-package com.tyomsky.moviedb;
+package com.tyomsky.moviedb.adapter;
 
 import android.content.Context;
 import android.net.Uri;
@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
+import com.tyomsky.moviedb.R;
 import com.tyomsky.moviedb.model.Movie;
 
 import java.util.ArrayList;

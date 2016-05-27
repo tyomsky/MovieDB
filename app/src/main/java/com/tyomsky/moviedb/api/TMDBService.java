@@ -1,6 +1,6 @@
 package com.tyomsky.moviedb.api;
 
-import com.tyomsky.moviedb.model.MoviesCollection;
+import com.tyomsky.moviedb.api.dto.MoviesCollectionDTO;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -11,12 +11,12 @@ public interface TMDBService {
     String BASE_URL = "http://api.themoviedb.org/3/";
 
     @GET(value = "movie/top_rated/")
-    Call<MoviesCollection> getTopRatedMovies();
+    Call<MoviesCollectionDTO> getTopRatedMovies();
 
     @GET(value = "movie/popular")
-    Call<MoviesCollection> getPopularMovies();
+    Call<MoviesCollectionDTO> getPopularMovies();
 
     @GET(value = "discover/movie")
-    Call<MoviesCollection> getMovies(@Query(value = "sort_by") String sortBy,
-                                     @Query(value = "page") int page);
+    Call<MoviesCollectionDTO> getMovies(@Query(value = "sort_by") String sortBy,
+                                        @Query(value = "page") int page);
 }

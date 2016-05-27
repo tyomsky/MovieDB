@@ -1,4 +1,4 @@
-package com.tyomsky.moviedb.model;
+package com.tyomsky.moviedb.api.dto;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -9,14 +9,14 @@ import java.util.List;
 import javax.annotation.Generated;
 
 @Generated("org.jsonschema2pojo")
-public class MoviesCollection {
+public class MoviesCollectionDTO {
 
     @SerializedName("page")
     @Expose
     private Integer page;
     @SerializedName("results")
     @Expose
-    private List<Movie> results = new ArrayList<Movie>();
+    private List<MovieDTO> results = new ArrayList<MovieDTO>();
     @SerializedName("total_results")
     @Expose
     private Integer totalResults;
@@ -47,7 +47,7 @@ public class MoviesCollection {
      * @return
      *     The results
      */
-    public List<Movie> getResults() {
+    public List<MovieDTO> getResults() {
         return results;
     }
 
@@ -56,7 +56,7 @@ public class MoviesCollection {
      * @param results
      *     The results
      */
-    public void setResults(List<Movie> results) {
+    public void setResults(List<MovieDTO> results) {
         this.results = results;
     }
 

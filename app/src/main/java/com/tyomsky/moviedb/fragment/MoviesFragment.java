@@ -21,12 +21,14 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.tyomsky.moviedb.BuildConfig;
-import com.tyomsky.moviedb.MoviesAdapter;
 import com.tyomsky.moviedb.R;
+import com.tyomsky.moviedb.adapter.MoviesAdapter;
 import com.tyomsky.moviedb.api.ServiceGenerator;
 import com.tyomsky.moviedb.api.TMDBService;
+import com.tyomsky.moviedb.api.dto.MovieDTO;
+import com.tyomsky.moviedb.api.dto.MoviesCollectionDTO;
+import com.tyomsky.moviedb.mapper.MoviesMapper;
 import com.tyomsky.moviedb.model.Movie;
-import com.tyomsky.moviedb.model.MoviesCollection;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -146,7 +148,7 @@ public class MoviesFragment extends Fragment implements MoviesAdapter.OnItemClic
         moviesAdapter.clear();
         currentPage = 1;
         String sortBy = getPreferredSorting();
-        Call<MoviesCollection> call = tmdbService.getMovies(sortBy, currentPage);
+        Call<MoviesCollectionDTO> call = tmdbService.getMovies(sortBy, currentPage);
         call.enqueue(moviesFetchCallback);
         calls.add(call);
     }
@@ -166,24 +168,24 @@ public class MoviesFragment extends Fragment implements MoviesAdapter.OnItemClic
     }
 
     //callbacks
-    private Callback<MoviesCollection> moviesFetchCallback = new Callback<MoviesCollection>() {
+    private Callback<MoviesCollectionDTO> moviesFetchCallback = new Callback<MoviesCollectionDTO>() {
         @Override
-        public void onResponse(Call<MoviesCollection> call, Response<MoviesCollection> response) {
+        public void onResponse(Call<MoviesCollectionDTO> call, Response<MoviesCollectionDTO> response) {
             isLoading = false;
             if (response != null && response.isSuccessful()) {
-                MoviesCollection collection = response.body();
+                MoviesCollectionDTO collection = response.body();
                 if (collection != null) {
                     isLastPage = collection.getTotalPages() <= currentPage;
-                    List<Movie> movies = collection.getResults();
+                    List<MovieDTO> movies = collection.getResults();
                     if (movies != null) {
-                        moviesAdapter.addAll(movies, true);
+                        moviesAdapter.addAll(MoviesMapper.map(movies), true);
                     }
                 }
             }
         }
 
         @Override
-        public void onFailure(Call<MoviesCollection> call, Throwable t) {
+        public void onFailure(Call<MoviesCollectionDTO> call, Throwable t) {
             Log.e(getClass().getName(), "Unable to load data!", t);
         }
     };
@@ -211,7 +213,7 @@ public class MoviesFragment extends Fragment implements MoviesAdapter.OnItemClic
         isLoading = true;
         currentPage += 1;
         String sortBy = getPreferredSorting();
-        Call<MoviesCollection> call = tmdbService.getMovies(sortBy, currentPage);
+        Call<MoviesCollectionDTO> call = tmdbService.getMovies(sortBy, currentPage);
         call.enqueue(moviesFetchCallback);
         calls.add(call);
     }
