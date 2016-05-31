@@ -18,7 +18,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.tyomsky.moviedb.BuildConfig;
 import com.tyomsky.moviedb.R;
@@ -221,15 +220,14 @@ public class MoviesFragment extends Fragment implements MoviesAdapter.OnItemClic
     @Override
     public void onClick(int position) {
         Movie movie = moviesAdapter.get(position);
-        Toast.makeText(getActivity(), movie.getTitle(), Toast.LENGTH_SHORT).show();
         if (callbacks != null) {
-            callbacks.onItemClickListener();
+            callbacks.onItemClickListener(movie);
         }
     }
 
     public interface Callbacks {
 
-        void onItemClickListener();
+        void onItemClickListener(Movie movie);
 
     }
 
