@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import com.squareup.picasso.Picasso;
 import com.tyomsky.moviedb.R;
 import com.tyomsky.moviedb.model.Movie;
+import com.tyomsky.moviedb.util.PosterHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,8 +23,7 @@ import butterknife.ButterKnife;
 public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewHolder> {
 
     private static final String TAG = "MovieListAdapter";
-    private static final String BASE_IMAGE_URI = "http://image.tmdb.org/t/p/";
-    private static final String IMAGE_SIZE_PATH = "w185";
+
     private Context context;
     private List<Movie> movies = new ArrayList<>();
     private OnItemClickListener onItemClickListener;
@@ -80,7 +80,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
 
     private void preloadImages(List<Movie> movies) {
         for (Movie movie : movies) {
-            Uri posterUri = buildPosterUri(movie);
+            Uri posterUri = PosterHelper.buildPosterUri(movie);
             Picasso.with(context).load(posterUri).fetch();
         }
     }
@@ -106,7 +106,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
         }
 
         public void bindMovie(Movie movie) {
-            Uri imageUri = buildPosterUri(movie);
+            Uri imageUri = PosterHelper.buildPosterUri(movie);
             Log.d(TAG, imageUri.toString());
 
             Picasso.with(context)
@@ -114,14 +114,6 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
                     .error(android.R.drawable.ic_dialog_alert)
                     .into(imageView);
         }
-    }
-
-    private Uri buildPosterUri(Movie movie) {
-        String moviePoster = movie.getPosterPath();
-        return Uri.parse(BASE_IMAGE_URI).buildUpon()
-                .appendPath(IMAGE_SIZE_PATH)
-                .appendEncodedPath(moviePoster)
-                .build();
     }
 
 }

@@ -13,6 +13,8 @@ public class Movie implements Parcelable {
     private Double voteAverage;
     private String posterPath;
 
+    private String backdropPath;
+
     public Movie() {
     }
 
@@ -72,6 +74,14 @@ public class Movie implements Parcelable {
         this.posterPath = posterPath;
     }
 
+    public String getBackdropPath() {
+        return backdropPath;
+    }
+
+    public void setBackdropPath(String backdropPath) {
+        this.backdropPath = backdropPath;
+    }
+
     public static final class Builder {
         private Integer id;
         private String title;
@@ -80,6 +90,7 @@ public class Movie implements Parcelable {
         private Integer voteCount;
         private Double voteAverage;
         private String posterPath;
+        private String backdropPath;
 
         public Builder id(Integer id) {
             this.id = id;
@@ -116,6 +127,11 @@ public class Movie implements Parcelable {
             return this;
         }
 
+        public Builder backdropPath(String backdropPath) {
+            this.backdropPath = backdropPath;
+            return this;
+        }
+
         public Movie build() {
             Movie movie = new Movie();
             movie.setId(id);
@@ -125,6 +141,7 @@ public class Movie implements Parcelable {
             movie.setVoteCount(voteCount);
             movie.setVoteAverage(voteAverage);
             movie.setPosterPath(posterPath);
+            movie.setBackdropPath(backdropPath);
             return movie;
         }
     }
@@ -137,6 +154,7 @@ public class Movie implements Parcelable {
         voteCount = in.readByte() == 0x00 ? null : in.readInt();
         voteAverage = in.readByte() == 0x00 ? null : in.readDouble();
         posterPath = in.readString();
+        backdropPath = in.readString();
     }
 
     @Override
@@ -173,6 +191,7 @@ public class Movie implements Parcelable {
             dest.writeDouble(voteAverage);
         }
         dest.writeString(posterPath);
+        dest.writeString(backdropPath);
     }
 
     @SuppressWarnings("unused")

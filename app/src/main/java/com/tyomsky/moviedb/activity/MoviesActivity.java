@@ -25,5 +25,6 @@ public class MoviesActivity extends AppCompatActivity implements MoviesFragment.
     public void onItemClickListener(Movie movie) {
         Intent intent = new Intent(this, MovieActivity.class);
         intent.putExtra(MovieActivity.EXTRA_MOVIE, movie);
+        startActivity(intent);
     }
 }
