@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -71,7 +72,7 @@ public class MoviesFragment extends Fragment implements MoviesAdapter.OnItemClic
         MenuItem item = menu.findItem(R.id.action_sort_by);
         Spinner spinner = (Spinner) item.getActionView();
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
-                getActivity(),
+                ((AppCompatActivity)getActivity()).getSupportActionBar().getThemedContext(),
                 R.array.sort_by_entries,
                 android.R.layout.simple_spinner_dropdown_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

@@ -6,12 +6,16 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
@@ -28,8 +32,14 @@ public class MovieFragment extends Fragment {
 
     private Movie movie;
 
+    @Bind(R.id.backdrop)
+    ImageView backdrop;
     @Bind(R.id.toolbar)
     Toolbar toolbar;
+    @Bind(R.id.favorite_fab)
+    FloatingActionButton fab;
+    @Bind(R.id.overview)
+    TextView overview;
 
     public static MovieFragment newInstance(Movie movie) {
 
@@ -46,9 +56,19 @@ public class MovieFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.movie_fragment, container, false);
         ButterKnife.bind(this, rootView);
         movie = getArguments().getParcelable(ARGS_MOVIE);
+        if (movie != null) {
+            toolbar.setTitle(movie.getTitle());
+            toolbar.setTitleTextAppearance(getActivity(), R.style.MovieTitleStyle);
+        }
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
-        toolbar.setTitle(movie.getTitle());
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Snackbar.make(v, "button clicked", Snackbar.LENGTH_SHORT).show();
+            }
+        });
         loadBackdrop();
+        overview.setText(movie.getOverview());
         return rootView;
     }
 
@@ -58,7 +78,7 @@ public class MovieFragment extends Fragment {
             Picasso.with(getActivity()).load(backdropUri).into(new Target() {
                 @Override
                 public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                    toolbar.setBackground(new BitmapDrawable(getResources(), bitmap));
+                    backdrop.setImageDrawable(new BitmapDrawable(getResources(), bitmap));
                 }
 
                 @Override
