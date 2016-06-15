@@ -1,8 +1,5 @@
 package com.tyomsky.moviedb.fragment;
 
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -15,10 +12,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 import com.tyomsky.moviedb.R;
 import com.tyomsky.moviedb.model.Movie;
 import com.tyomsky.moviedb.util.PosterHelper;
@@ -40,6 +37,10 @@ public class MovieFragment extends Fragment {
     FloatingActionButton fab;
     @Bind(R.id.overview)
     TextView overview;
+    @Bind(R.id.release_year)
+    TextView releaseYear;
+    @Bind(R.id.rating)
+    RatingBar rating;
 
     public static MovieFragment newInstance(Movie movie) {
 
@@ -60,7 +61,7 @@ public class MovieFragment extends Fragment {
             toolbar.setTitle(movie.getTitle());
             toolbar.setTitleTextAppearance(getActivity(), R.style.MovieTitleStyle);
         }
-        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -68,29 +69,23 @@ public class MovieFragment extends Fragment {
             }
         });
         loadBackdrop();
-        overview.setText(movie.getOverview());
+        showMovieDetails();
+
         return rootView;
+    }
+
+    private void showMovieDetails() {
+        if (movie != null) {
+            overview.setText(movie.getOverview());
+            releaseYear.setText(movie.getReleaseDate().substring(0, 4));
+            rating.setRating((float)movie.getVoteAverage().doubleValue() % 5); // max rating = 10
+        }
     }
 
     private void loadBackdrop() {
         if (movie != null && movie.getBackdropPath() != null) {
             Uri backdropUri = PosterHelper.buildBackdropUri(movie.getBackdropPath());
-            Picasso.with(getActivity()).load(backdropUri).into(new Target() {
-                @Override
-                public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                    backdrop.setImageDrawable(new BitmapDrawable(getResources(), bitmap));
-                }
-
-                @Override
-                public void onBitmapFailed(Drawable errorDrawable) {
-
-                }
-
-                @Override
-                public void onPrepareLoad(Drawable placeHolderDrawable) {
-
-                }
-            });
+            Picasso.with(getActivity()).load(backdropUri).into(backdrop);
         }
     }
 

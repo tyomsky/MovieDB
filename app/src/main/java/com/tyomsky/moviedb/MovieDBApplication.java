@@ -9,7 +9,7 @@ public class MovieDBApplication extends Application {
     public static Application currentApplication;
     public static final String BASE_IMAGE_URI = "http://image.tmdb.org/t/p/";
     public static final String POSTER_SIZE_PATH = "w185";
-    public static final String BACKGROUND_POSTER_SIZE_PATH = "w342";
+    public static final String BACKGROUND_POSTER_SIZE_PATH = "w780";
 
 
     public static File getCacheDirectory() {

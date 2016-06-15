@@ -15,6 +15,7 @@ public class MovieMapper {
                 .voteAverage(movieDTO.getVoteAverage())
                 .voteCount(movieDTO.getVoteCount())
                 .backdropPath(movieDTO.getBackdropPath())
+                .releaseDate(movieDTO.getReleaseDate())
                 .build();
     }
 

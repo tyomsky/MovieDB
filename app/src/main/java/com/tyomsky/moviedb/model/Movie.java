@@ -12,8 +12,8 @@ public class Movie implements Parcelable {
     private Integer voteCount;
     private Double voteAverage;
     private String posterPath;
-
     private String backdropPath;
+    private String releaseDate;
 
     public Movie() {
     }
@@ -82,6 +82,14 @@ public class Movie implements Parcelable {
         this.backdropPath = backdropPath;
     }
 
+    public String getReleaseDate() {
+        return releaseDate;
+    }
+
+    public void setReleaseDate(String releaseDate) {
+        this.releaseDate = releaseDate;
+    }
+
     public static final class Builder {
         private Integer id;
         private String title;
@@ -91,6 +99,7 @@ public class Movie implements Parcelable {
         private Double voteAverage;
         private String posterPath;
         private String backdropPath;
+        private String releaseDate;
 
         public Builder id(Integer id) {
             this.id = id;
@@ -132,6 +141,11 @@ public class Movie implements Parcelable {
             return this;
         }
 
+        public Builder releaseDate(String releaseDate) {
+            this.releaseDate = releaseDate;
+            return this;
+        }
+
         public Movie build() {
             Movie movie = new Movie();
             movie.setId(id);
@@ -142,6 +156,7 @@ public class Movie implements Parcelable {
             movie.setVoteAverage(voteAverage);
             movie.setPosterPath(posterPath);
             movie.setBackdropPath(backdropPath);
+            movie.setReleaseDate(releaseDate);
             return movie;
         }
     }
@@ -155,6 +170,7 @@ public class Movie implements Parcelable {
         voteAverage = in.readByte() == 0x00 ? null : in.readDouble();
         posterPath = in.readString();
         backdropPath = in.readString();
+        releaseDate = in.readString();
     }
 
     @Override
@@ -192,6 +208,7 @@ public class Movie implements Parcelable {
         }
         dest.writeString(posterPath);
         dest.writeString(backdropPath);
+        dest.writeString(releaseDate);
     }
 
     @SuppressWarnings("unused")
